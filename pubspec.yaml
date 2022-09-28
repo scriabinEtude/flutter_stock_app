@@ -98,3 +98,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+analyzer:
+  exclude:
+    - lib/**.g.dart
+    - lib/**.freezed.dart
