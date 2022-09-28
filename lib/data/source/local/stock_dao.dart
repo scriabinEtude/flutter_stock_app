@@ -1,25 +1,27 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:stock_app/data/source/local/company_listing_entity.dart';
 
 class StockDao {
   static const companyListing = 'companyListing';
-  final box = Hive.box('stock.db');
+  static const stock_db = 'stock.db';
 
   // add
   Future<void> insertCompanyListings(
-      List<CompanyListingEntity> companyListingEntity) async {
-    await box.put(StockDao.companyListing, companyListingEntity);
+      List<CompanyListingEntity> companyListingEntitis) async {
+    final box = await Hive.openBox<CompanyListingEntity>(stock_db);
+    await box.addAll(companyListingEntitis);
   }
 
   // clear
   Future clearCompanyListings() async {
+    final box = await Hive.openBox<CompanyListingEntity>(stock_db);
     await box.clear();
   }
 
   // search
   Future<List<CompanyListingEntity>> searchCompanyListing(String query) async {
-    final List<CompanyListingEntity> companyListing = box
-        .get(StockDao.companyListing, defaultValue: <CompanyListingEntity>[]);
+    final box = await Hive.openBox<CompanyListingEntity>(stock_db);
+    final List<CompanyListingEntity> companyListing = box.values.toList();
 
     return companyListing
         .where((e) =>
